@@ -28,6 +28,24 @@ interfaces:
 The long term direction is a planetary observatory where observations,
 uncertainty, provenance, and rendering remain distinct.
 
+## System Boundary
+
+```text
+Observed hand landmarks
+          ↓
+Temporal filtering and confidence
+          ↓
+Interaction intent
+          ↓
+Physics and scene state
+          ↓
+WebGL rendering
+```
+
+The boundary matters because a rendered effect is not evidence that the
+underlying perception is correct. Future modules must preserve the distinction
+between observation, interpretation, simulation, and presentation.
+
 ## Run the Preserved Experiments
 
 Requirements:
@@ -62,6 +80,22 @@ This confirms that the legacy experiment runs. It does not claim that the future
 scientific observatory is complete or that the preserved perception behavior is
 scientifically validated.
 
+## Known Gaps
+
+* camera and demo modes do not yet share one reproducible input contract
+* confidence and uncertainty are not fully surfaced in the interface
+* occlusion and rapid motion can destabilize landmark driven interactions
+* replay and deterministic evaluation require stronger separation from rendering
+* the planetary observatory modules remain a roadmap, not a completed instrument
+
+## Next Technical Milestones
+
+* define typed observation and uncertainty records
+* introduce deterministic replay fixtures
+* separate perception, interaction, physics, and rendering modules
+* add measurable hand tracking stability benchmarks
+* complete provenance and licensing review for every distributed asset
+
 ## Research Boundary
 
 Atlas treats the visual demo as an experimental interface, not as scientific
@@ -72,4 +106,3 @@ coordinate frames, uncertainty, and failure states explicitly.
 
 No open source license is granted yet. Model, texture, dataset, and source
 provenance must be resolved before public redistribution.
-
