@@ -46,39 +46,20 @@ The boundary matters because a rendered effect is not evidence that the
 underlying perception is correct. Future modules must preserve the distinction
 between observation, interpretation, simulation, and presentation.
 
-## Run the Preserved Experiments
-
-Requirements:
-
-* Node.js 24 or newer
-* npm 11 or newer
-* Python 3.12 or newer
-
-```powershell
-npm ci
-npm run check:legacy
-npm run serve:legacy
-```
-
-Open the deterministic demos:
-
-* V2: `http://127.0.0.1:8777/v2.html?demo=1`
-* V3: `http://127.0.0.1:8777/v3.html?demo=1`
-
-With the server running:
-
-```powershell
-npm run smoke:legacy
-```
-
 ## Verification
 
-The preserved code passed its JavaScript syntax check and HTTP smoke check on
-29 July 2026. The V3 demo also rendered successfully in a browser.
+The private source baseline passed its JavaScript syntax check and HTTP smoke
+check on 29 July 2026. The V3 demo also rendered successfully in a browser.
 
 This confirms that the legacy experiment runs. It does not claim that the future
 scientific observatory is complete or that the preserved perception behavior is
 scientifically validated.
+
+## Source Availability
+
+The complete source remains in a private development repository while model,
+texture, dataset, and source provenance are reviewed. This public repository is
+the project overview and evidence boundary, not a runnable source release.
 
 ## Known Gaps
 
