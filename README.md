@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/cover.svg" width="100%" alt="Atlas Omega" />
+  <img src="./assets/solar-system.png" width="100%" alt="ATLAS Omega causal observatory: a rendered solar system with a detail panel for Earth where every value carries a provenance tag reading SYNTHETIC, DERIVED, or INFERRED" />
 </p>
 
 <p align="center">
@@ -23,6 +23,26 @@ confidence, and clear separation between observation and presentation.
 The visible effect is only the final layer. A trustworthy spatial system must
 keep the original observation, interpretation, simulated state, and rendered
 output distinguishable.
+
+## Provenance as an interface element
+
+<p align="center">
+  <img src="./assets/exoplanet-analysis.jpg" width="100%" alt="Exoplanet analysis interface for WASP-39 b showing parameters annotated with provenance and uncertainty" />
+</p>
+
+Every quantity the observatory displays is tagged with where it came from.
+`SYNTHETIC` marks a procedural reconstruction, `DERIVED` marks a value computed
+from others, `INFERRED` marks an estimate. A radius and a guess never render
+identically.
+
+This is the same discipline the hand tracking work needs, moved somewhere it is
+easier to see. A landmark estimate and a confirmed gesture are as different as
+a measured radius and an inferred mass, and an interface that renders them
+alike is lying by omission.
+
+The interface below renders and is interactive. That is a working prototype,
+not a validated scientific instrument, and the distinction is kept in the
+product rather than in a disclaimer.
 
 ## System boundary
 
@@ -63,13 +83,57 @@ This verifies that the preserved experiment runs. It does not claim that the
 future observatory is complete or that the current perception behavior has been
 scientifically validated.
 
+## Defects found in my own code
+
+Before designing the observatory, I audited the legacy experiments rather than
+building on top of them. Six defects were confirmed and located. They are listed
+here because a system that claims to surface uncertainty should start by
+surfacing its own.
+
+| # | Defect | Consequence |
+| --- | --- | --- |
+| 1 | The V3 segmentation mask is sampled through camera, particle, orb, and landmark transforms that are mutually incompatible | Occlusion and silhouette effects cannot all be aligned at once. Some were always wrong |
+| 2 | Millisecond timestamps are passed to a One Euro filter whose delta is treated as seconds | The intended smoothing was effectively disabled. The filter was present and doing nothing |
+| 3 | Camera retry can leave multiple permanent animation loops running | Compounding frame cost after any camera failure |
+| 4 | Camera, playback, and hand-model failures are all reported as `CAMERA BLOCKED` | The error message is not trustworthy, which makes field diagnosis unreliable |
+| 5 | Fluid and physics bounds are built from the initial viewport and never rebuilt on resize | Physics silently diverges from what is on screen after a window change |
+| 6 | The GPU update is not leapfrog integration, and random initialization plus a concurrent loop means the step function is not a deterministic replay | Runs cannot be compared to each other, which invalidates before and after measurement |
+
+Defect 2 is the one worth dwelling on. The filter was imported, configured, and
+called on every frame. Nothing errored, nothing looked broken, and the smoothing
+it was supposed to provide never existed. A unit mismatch across a boundary
+produces silence, not a stack trace, which is the argument for typed observation
+records rather than raw numbers crossing module edges.
+
+Defect 6 is why deterministic replay sits at the top of the roadmap. Without it,
+every claim about stability is an impression rather than a measurement.
+
+## Model provenance
+
+Four local model files were inherited from the legacy experiments. Their
+filenames and API usage indicate MediaPipe and TensorFlow Lite origins, but the
+original download URLs, licenses, and versions were never recorded.
+
+| File | Bytes | SHA-256 (first 16) | Status |
+| --- | ---: | --- | --- |
+| `hand_landmarker.task` | 7,819,105 | `fbc2a30080c3c557` | Runtime asset, provenance review pending |
+| `pose_landmarker_lite.task` | 5,777,746 | `59929e1d1ee95287` | Legacy only, provenance review pending |
+| `face_landmarker.task` | 3,758,596 | `64184e229b263107` | Legacy only, provenance review pending |
+| `deeplabv3.tflite` | 2,780,051 | `9711334db2b01d58` | Legacy segmentation, provenance review pending |
+
+They are preserved so the legacy demos stay reproducible. They are not described
+as first-party models and are not redistributed. Any model the observatory
+adopts going forward has to arrive with a source URL, license, version,
+checksum, expected input, output semantics, and documented failure mode.
+
 ## Known constraints
 
 1. Camera and demo modes do not yet share one reproducible input contract.
 2. Confidence and uncertainty are not fully surfaced in the interface.
 3. Occlusion and rapid motion can destabilize landmark interactions.
 4. Replay and evaluation need stronger separation from rendering.
-5. The planetary observatory remains a direction, not a completed instrument.
+5. The observatory renders as an interactive prototype; it is not a validated
+   scientific instrument and no result from it should be cited as one.
 
 ## Public and private boundary
 
