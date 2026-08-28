@@ -53,7 +53,7 @@ does not fall back to a best guess. It returns:
 
 ```
 OBSERVATION DECISION:  ABSTAIN
-GATE FAILED — NOT AN OBSERVING PROPOSAL
+GATE FAILED - NOT AN OBSERVING PROPOSAL
 ```
 
 Telescope time is the scarce resource this would be spending. A ranked
