@@ -27,20 +27,42 @@ output distinguishable.
 ## Provenance as an interface element
 
 <p align="center">
-  <img src="./assets/exoplanet-analysis.jpg" width="100%" alt="Exoplanet analysis interface for WASP-39 b showing parameters annotated with provenance and uncertainty" />
+  <img src="./assets/exoplanet-analysis.jpg" width="100%" alt="WASP-39 b analysis interface: every parameter tagged INFERRED or DERIVED with uncertainty bounds, above a hypothesis disagreement benchmark whose gates fail and whose observation decision is ABSTAIN" />
 </p>
 
 Every quantity the observatory displays is tagged with where it came from.
 `SYNTHETIC` marks a procedural reconstruction, `DERIVED` marks a value computed
-from others, `INFERRED` marks an estimate. A radius and a guess never render
-identically.
+from others, `INFERRED` marks an estimate, and each carries its own asymmetric
+uncertainty bounds. A radius and a guess never render identically.
 
 This is the same discipline the hand tracking work needs, moved somewhere it is
 easier to see. A landmark estimate and a confirmed gesture are as different as
 a measured radius and an inferred mass, and an interface that renders them
 alike is lying by omission.
 
-The interface below renders and is interactive. That is a working prototype,
+### Abstention is a supported outcome
+
+The panel above the spectrum is a retrospective benchmark on a held-out
+measurement. Three checks run before the system is allowed to recommend an
+observation: an effectiveness gate, a selective-safety gate, and a
+model-family adequacy check.
+
+In the run shown, the first two **fail** and the third returns **inadequate**,
+because the calibration distance exceeds its descriptive reference. The system
+does not fall back to a best guess. It returns:
+
+```
+OBSERVATION DECISION:  ABSTAIN
+GATE FAILED — NOT AN OBSERVING PROPOSAL
+```
+
+Telescope time is the scarce resource this would be spending. A ranked
+candidate the model cannot justify is worse than no candidate, because it looks
+like an answer. Abstention had to be a first-class result rather than an error
+path, and the interface has to render a refusal as clearly as it renders a
+recommendation.
+
+The interface renders and is interactive. That makes it a working prototype,
 not a validated scientific instrument, and the distinction is kept in the
 product rather than in a disclaimer.
 
